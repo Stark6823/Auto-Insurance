@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { User } from '../../shared/models/user.model';
 import { FormsModule } from '@angular/forms';
 import { RoleGuard } from '../../auth/role.guard';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -13,27 +14,42 @@ import { RoleGuard } from '../../auth/role.guard';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   showProfileCard = false;
-  showDetailedProfileCard = false; // New property for the detailed card
+  showDetailedProfileCard = false;
   currentUser: User | null = null;
-  profileImage = '/src/assets/userlogo001.png'; // Default image
+  profileImage = 'assets/userlogo001.png';
   showAvatarOptions = false;
-  editingDetailedField: string | null = null; // For the detailed card
+  showAvatarOptionsDetailed = false;
+  editingDetailedField: string | null = null;
   editedUserId: number | null = null;
   editedEmail: string = '';
   editedUsername: string = '';
+
+  @Output() profileImageUpdated = new EventEmitter<string>();
+  private profileUpdateSubscription: Subscription | undefined;
 
   constructor(private authService: AuthService, private router: Router, private roleGuard: RoleGuard) {}
 
   ngOnInit(): void {
     this.loadCurrentUser();
+    this.profileUpdateSubscription = this.profileImageUpdated.subscribe(() => {
+      this.loadCurrentUser();
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.profileUpdateSubscription) {
+      this.profileUpdateSubscription.unsubscribe();
+    }
   }
 
   loadCurrentUser() {
     this.currentUser = this.authService.getCurrentUser();
     if (this.currentUser && this.currentUser.profileImage) {
       this.profileImage = this.currentUser.profileImage;
+    } else {
+      this.profileImage = 'assets/userlogo001.png';
     }
   }
 
@@ -47,9 +63,9 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-    this.currentUser = null; // Explicitly clear the currentUser
-    this.closeProfileCard(); // Close the main profile card on logout
-    this.closeDetailedProfileCard(); // Close the detailed profile card on logout (in case it's open)
+    this.currentUser = null;
+    this.closeProfileCard();
+    this.closeDetailedProfileCard();
   }
 
   goToLogin() {
@@ -63,26 +79,38 @@ export class HeaderComponent implements OnInit {
   toggleProfileCard() {
     this.showProfileCard = !this.showProfileCard;
     this.showAvatarOptions = false;
-    this.closeDetailedProfileCard(); // Ensure detailed card is closed when toggling main profile
+    this.showAvatarOptionsDetailed = false;
+    this.closeDetailedProfileCard();
   }
 
   closeProfileCard() {
     this.showProfileCard = false;
     this.showAvatarOptions = false;
+    this.showAvatarOptionsDetailed = false;
+    
     this.closeDetailedProfileCard();
+    
   }
 
   toggleEditAvatarOptions() {
     this.showAvatarOptions = !this.showAvatarOptions;
+    this.showAvatarOptionsDetailed = false;
+  }
+
+  toggleEditAvatarOptionsDetailed() {
+    this.showAvatarOptionsDetailed = !this.showAvatarOptionsDetailed;
+    this.showAvatarOptions = false;
   }
 
   removeProfileImage() {
-    this.profileImage = '/src/assets/userlogo001.png';
+    this.profileImage = 'assets/userlogo001.png';
     if (this.currentUser) {
       this.currentUser.profileImage = this.profileImage;
       localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+      this.profileImageUpdated.emit(this.profileImage);
     }
     this.showAvatarOptions = false;
+    this.showAvatarOptionsDetailed = false;
   }
 
   uploadProfileImage(event: any) {
@@ -90,26 +118,32 @@ export class HeaderComponent implements OnInit {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
+        console.log('Data URL:', e.target.result); // Add this line
         this.profileImage = e.target.result;
         if (this.currentUser) {
           this.currentUser.profileImage = this.profileImage;
           localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+          this.profileImageUpdated.emit(this.profileImage);
         }
       };
       reader.readAsDataURL(file);
       this.showAvatarOptions = false;
+      this.showAvatarOptionsDetailed = false;
     }
   }
 
   openDetailedProfile() {
     this.showDetailedProfileCard = true;
-    this.loadCurrentUserForEdit(); // Load current user data for editing
-    // this.closeProfileCard(); // Close the main profile card
+    this.loadCurrentUserForEdit();
+    this.closeProfileCard();
+    this.showDetailedProfileCard = true;
+    
   }
 
   closeDetailedProfileCard() {
     this.showDetailedProfileCard = false;
     this.editingDetailedField = null;
+
   }
 
   loadCurrentUserForEdit() {
@@ -122,22 +156,24 @@ export class HeaderComponent implements OnInit {
 
   editDetailedField(field: string) {
     this.editingDetailedField = field;
-    this.loadCurrentUserForEdit(); // Ensure latest data is in the edit fields
+    // this.loadCurrentUserForEdit();
   }
 
   saveDetailedChanges() {
     if (this.currentUser) {
       if (this.editingDetailedField === 'userId' && this.editedUserId !== null) {
         this.currentUser.userId = this.editedUserId;
-      } else if (this.editingDetailedField === 'email') {
+      } 
+       if (this.editingDetailedField === 'email') {
         this.currentUser.email = this.editedEmail;
-      } else if (this.editingDetailedField === 'username') {
+      }
+      if (this.editingDetailedField === 'username') {
         this.currentUser.username = this.editedUsername;
       }
       localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
       this.editingDetailedField = null;
       this.closeDetailedProfileCard();
-      this.loadCurrentUser(); // Update displayed data in the header card (if it's open again)
+      this.loadCurrentUser();
     }
   }
 

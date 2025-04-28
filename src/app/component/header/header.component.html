@@ -51,12 +51,10 @@
         <li class="nav-item position-relative">
           <button class="btn rounded-circle p-0 user-profile-button text-white" (click)="toggleProfileCard()">
             <div class="rounded-circle overflow-hidden" style="width: 30px; height: 30px;">
-              <img src= 'assets/userlogo001.png' alt="User Avatar" width="30" height="30" style="object-fit: cover; cursor: pointer;">
+              <img src="assets/userlogo001.png" alt="User Avatar" width="30" height="30" style="object-fit: cover; cursor: pointer;">
             </div>
           </button>
           <ul class="hover-menu user-profile-menu">
-
-      
             <li *ngIf="!isLoggedIn()">
               <a (click)="goToLogin()">Login</a>
             </li>
@@ -67,41 +65,39 @@
         </li>
       </ul>
 
-      <div *ngIf="!showDetailedProfileCard">
-        <div class="profile-card dropdown-menu" [class.show]="showProfileCard" *ngIf="isLoggedIn()" >
-          <div class="d-flex justify-content-end p-2">
-            <button class="btn-close" (click)="closeProfileCard()"></button>
-          </div>
-          <div class="d-flex flex-column align-items-center p-3">
-            <div class="rounded-circle overflow-hidden" style="width: 80px; height: 80px; cursor: pointer;" (click)="toggleEditAvatarOptions()">
-              <img [src]="profileImage" alt="User Avatar" width="80" height="80" style="object-fit: cover;">
-              <!-- <div class="position-absolute bottom-0 end-0 bg-secondary rounded-circle d-flex justify-content-center align-items-center" style="width: 24px; height: 24px;">
-                <i class="bi bi-pencil-fill text-white" style="font-size: 0.8rem;">123</i>
-              </div> -->
+      <div class="profile-card dropdown-menu" [class.show]="showProfileCard" *ngIf="isLoggedIn()">
+        <div class="d-flex justify-content-end p-2">
+          <button class="btn-close" (click)="closeProfileCard()"></button>
+        </div>
+        <div class="d-flex flex-column align-items-center p-3">
+          <div class="rounded-circle overflow-hidden position-relative" style="width: 80px; height: 80px; cursor: pointer;">
+            <img [src]="profileImage" alt="User Avatar" width="80" height="80" style="object-fit: cover;">
+            <div class="position-absolute bottom-0 end-0 bg-secondary rounded-circle d-flex justify-content-center align-items-center" style="width: 24px; height: 24px;" (click)="toggleEditAvatarOptions()">
+              <i class="bi bi-pencil-fill text-white" style="font-size: 0.8rem;"></i>
             </div>
-            <div *ngIf="showAvatarOptions" class="position-absolute bg-light border rounded shadow-sm p-2" >
-              <button class="btn btn-sm btn-outline-danger mb-1 w-100" (click)="removeProfileImage()">Remove Image</button>
-              <input type="file" class="form-control form-control-sm" (change)="uploadProfileImage($event)">
-            </div>
-            <h2 class="mt-2">{{ currentUser?.username }}</h2>
-            <p class="text-muted">{{ currentUser?.email }}</p>
-            <p class="mt-1"><strong>Role:</strong> {{ currentUser?.role }}</p>
           </div>
-          <hr class="m-0">
-          <div class="list-group list-group-flush">
-            <a class="list-group-item list-group-item-action" (click)="openDetailedProfile()">
-              My Profile
-            </a>        
-            <a class="list-group-item list-group-item-action" (click)="goToInbox()">
-              Inbox <span class="badge bg-danger float-end">5</span>
-            </a>
-            <a class="list-group-item list-group-item-action" (click)="goToAccountSettings()">
-              Account Settings
-            </a>
-            <a class="list-group-item list-group-item-action" (click)="logout()">
-              Sign Out
-            </a>
+          <div *ngIf="showAvatarOptions" class="position-absolute bg-light border rounded shadow-sm p-2" style="top: 90px;">
+            <button class="btn btn-sm btn-outline-danger mb-1 w-100" (click)="removeProfileImage()" [disabled]="profileImage === 'assets/userlogo001.png'">Remove Image</button>
+            <input type="file" class="form-control form-control-sm" (change)="uploadProfileImage($event)">
           </div>
+          <h2 class="mt-2">{{ currentUser?.username }}</h2>
+          <p class="text-muted">{{ currentUser?.email }}</p>
+          <p class="mt-1"><strong>Role:</strong> {{ currentUser?.role }}</p>
+        </div>
+        <hr class="m-0">
+        <div class="list-group list-group-flush">
+          <a class="list-group-item list-group-item-action" (click)="openDetailedProfile()">
+            My Profile
+          </a>
+          <a class="list-group-item list-group-item-action" (click)="goToInbox()">
+            Inbox <span class="badge bg-danger float-end">5</span>
+          </a>
+          <a class="list-group-item list-group-item-action" (click)="goToAccountSettings()">
+            Account Settings
+          </a>
+          <a class="list-group-item list-group-item-action" (click)="logout()">
+            Sign Out
+          </a>
         </div>
       </div>
 
@@ -110,6 +106,18 @@
           <button class="btn-close" (click)="closeDetailedProfileCard()"></button>
         </div>
         <h2>My Profile Details</h2>
+        <div class="d-flex justify-content-center mb-3 position-relative" style="width: 100px; height: 100px; cursor: pointer; margin-left: 40%;" (click)="toggleEditAvatarOptionsDetailed()">
+          <div class="rounded-circle overflow-hidden" style="width: 100px; height: 100px;">
+            <img [src]="profileImage" alt="User Avatar" width="100" height="100" style="object-fit: cover; ">
+          </div>
+          <div class="position-absolute bottom-0 end-0 bg-secondary rounded-circle d-flex justify-content-center align-items-center" style="width: 24px; height: 24px;" (click)="toggleEditAvatarOptions()">
+            <i class="bi bi-pencil-fill text-white" style="font-size: 0.8rem;"></i>
+          </div>
+          <div *ngIf="showAvatarOptionsDetailed" class="position-absolute bg-light border rounded shadow-sm p-2" style="top: 90px; left: 50%; transform: translateX(-50%);">
+            <button class="btn btn-sm btn-outline-danger mb-1 w-100" (click)="removeProfileImage()" [disabled]="profileImage === 'assets/userlogo001.png'">Remove Image</button>
+            <input type="file" class="form-control form-control-sm" (change)="uploadProfileImage($event)">
+        </div>
+        </div>
         <div class="mb-3">
           <strong>User ID:</strong> {{ currentUser?.userId }} <i class="bi bi-pencil-fill ms-2" (click)="editDetailedField('userId')"></i>
           <input type="text" class="form-control form-control-sm mt-1" *ngIf="editingDetailedField === 'userId'" [(ngModel)]="editedUserId">

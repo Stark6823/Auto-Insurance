@@ -155,27 +155,48 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   editDetailedField(field: string) {
-    this.editingDetailedField = field;
-    // this.loadCurrentUserForEdit();
+    if (field === 'all') {
+      this.editingDetailedField = 'all';
+      this.loadCurrentUserForEdit();
+    } else {
+      this.editingDetailedField = field;
+      if (field === 'username') {
+        this.editedUsername = this.currentUser?.username || '';
+      }
+      if (field === 'email') {
+        this.editedEmail = this.currentUser?.email || '';
+      }
+      if (field === 'userId') {
+        this.editedUserId = this.currentUser?.userId || null;
+      }
+    }
   }
 
   saveDetailedChanges() {
     if (this.currentUser) {
-      if (this.editingDetailedField === 'userId' && this.editedUserId !== null) {
-        this.currentUser.userId = this.editedUserId;
-      } 
-       if (this.editingDetailedField === 'email') {
-        this.currentUser.email = this.editedEmail;
-      }
-      if (this.editingDetailedField === 'username') {
+      if (this.editingDetailedField === 'all') {
+        if (this.editedUserId !== null) {
+          this.currentUser.userId = this.editedUserId;
+        }
         this.currentUser.username = this.editedUsername;
+        this.currentUser.email = this.editedEmail;
+      } else {
+        if (this.editingDetailedField === 'userId' && this.editedUserId !== null) {
+          this.currentUser.userId = this.editedUserId;
+        }
+        if (this.editingDetailedField === 'email') {
+          this.currentUser.email = this.editedEmail;
+        }
+        if (this.editingDetailedField === 'username') {
+          this.currentUser.username = this.editedUsername;
+        }
       }
       localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
       this.editingDetailedField = null;
-      this.closeDetailedProfileCard();
       this.loadCurrentUser();
     }
   }
+
 
   goToMyProjects() {
     console.log('Go to My Projects');

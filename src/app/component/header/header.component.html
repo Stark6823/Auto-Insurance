@@ -1,11 +1,24 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 80px;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 80px">
   <div class="container-fluid">
     <a class="navbar-brand d-flex align-items-center" routerLink="/home">
-      <img src="../assets/lo-removebg-preview.png" alt="Company Logo" height="40" class="me-2">
+      <img
+        src="../assets/lo-removebg-preview.png"
+        alt="Company Logo"
+        height="40"
+        class="me-2"
+      />
       <h1 class="m-0">A2Z Insurance</h1>
     </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -40,8 +53,14 @@
         <li class="nav-item position-relative">
           <a class="nav-link" routerLink="/home">Talk to Expert</a>
           <ul class="hover-menu">
-            <li><a routerLink="/new-policy-help">Helpline for New Policy</a></li>
-            <li><a routerLink="/existing-policy-help">Helpline for Existing Policy</a></li>
+            <li>
+              <a routerLink="/new-policy-help">Helpline for New Policy</a>
+            </li>
+            <li>
+              <a routerLink="/existing-policy-help"
+                >Helpline for Existing Policy</a
+              >
+            </li>
             <li><a routerLink="/claim-help">Helpline for Claim</a></li>
           </ul>
         </li>
@@ -49,9 +68,21 @@
 
       <ul class="navbar-nav">
         <li class="nav-item position-relative">
-          <button class="btn rounded-circle p-0 user-profile-button text-white" (click)="toggleProfileCard()">
-            <div class="rounded-circle overflow-hidden" style="width: 30px; height: 30px;">
-              <img src="assets/userlogo001.png" alt="User Avatar" width="30" height="30" style="object-fit: cover; cursor: pointer;">
+          <button
+            class="btn rounded-circle p-0 user-profile-button text-white"
+            (click)="toggleProfileCard()"
+          >
+            <div
+              class="rounded-circle overflow-hidden"
+              style="width: 30px; height: 30px"
+            >
+              <img
+                [src]="profileImage"
+                alt="User Avatar"
+                width="30"
+                height="30"
+                style="object-fit: cover; cursor: pointer"
+              />
             </div>
           </button>
           <ul class="hover-menu user-profile-menu">
@@ -65,34 +96,56 @@
         </li>
       </ul>
 
-      <div class="profile-card dropdown-menu" [class.show]="showProfileCard" *ngIf="isLoggedIn()">
+      <div
+        class="profile-card dropdown-menu"
+        [class.show]="showProfileCard"
+        *ngIf="isLoggedIn()"
+      >
         <div class="d-flex justify-content-end p-2">
           <button class="btn-close" (click)="closeProfileCard()"></button>
         </div>
         <div class="d-flex flex-column align-items-center p-3">
-          <div class="rounded-circle overflow-hidden position-relative" style="width: 80px; height: 80px; cursor: pointer;">
-            <img [src]="profileImage" alt="User Avatar" width="80" height="80" style="object-fit: cover;">
-            <div class="position-absolute bottom-0 end-0 bg-secondary rounded-circle d-flex justify-content-center align-items-center" style="width: 24px; height: 24px;" (click)="toggleEditAvatarOptions()">
+          <div
+            class="rounded-circle overflow-hidden position-relative"
+            style="width: 80px; height: 80px; cursor: pointer"
+          >
+            <img
+              [src]="profileImage"
+              alt="User Avatar"
+              width="80"
+              height="80"
+              style="object-fit: cover"
+            />
+            <!-- <div class="position-absolute bottom-0 end-0 bg-secondary rounded-circle d-flex justify-content-center align-items-center" style="width: 24px; height: 24px;" (click)="toggleEditAvatarOptions()">
               <i class="bi bi-pencil-fill text-white" style="font-size: 0.8rem;"></i>
-            </div>
+            </div> -->
           </div>
-          <div *ngIf="showAvatarOptions" class="position-absolute bg-light border rounded shadow-sm p-2" style="top: 90px;">
+          <!-- <div *ngIf="showAvatarOptions" class="position-absolute bg-light border rounded shadow-sm p-2" style="top: 90px;">
             <button class="btn btn-sm btn-outline-danger mb-1 w-100" (click)="removeProfileImage()" [disabled]="profileImage === 'assets/userlogo001.png'">Remove Image</button>
             <input type="file" class="form-control form-control-sm" (change)="uploadProfileImage($event)">
-          </div>
+          </div> -->
           <h2 class="mt-2">{{ currentUser?.username }}</h2>
           <p class="text-muted">{{ currentUser?.email }}</p>
           <p class="mt-1"><strong>Role:</strong> {{ currentUser?.role }}</p>
         </div>
-        <hr class="m-0">
+        <hr class="m-0" />
         <div class="list-group list-group-flush">
-          <a class="list-group-item list-group-item-action" (click)="openDetailedProfile()">
+          <a
+            class="list-group-item list-group-item-action"
+            (click)="openDetailedProfile()"
+          >
             My Profile
           </a>
-          <a class="list-group-item list-group-item-action" (click)="goToInbox()">
+          <a
+            class="list-group-item list-group-item-action"
+            (click)="goToInbox()"
+          >
             Inbox <span class="badge bg-danger float-end">5</span>
           </a>
-          <a class="list-group-item list-group-item-action" (click)="goToAccountSettings()">
+          <a
+            class="list-group-item list-group-item-action"
+            (click)="goToAccountSettings()"
+          >
             Account Settings
           </a>
           <a class="list-group-item list-group-item-action" (click)="logout()">
@@ -101,40 +154,115 @@
         </div>
       </div>
 
-      <div class="detailed-profile-card shadow rounded p-3" [class.show]="showDetailedProfileCard" *ngIf="isLoggedIn()">
+      <div
+        class="detailed-profile-card shadow rounded p-3"
+        [class.show]="showDetailedProfileCard"
+        *ngIf="isLoggedIn()"
+      >
         <div class="d-flex justify-content-end">
-          <button class="btn-close" (click)="closeDetailedProfileCard()"></button>
+          <button
+            class="btn-close"
+            (click)="closeDetailedProfileCard()"
+          ></button>
         </div>
         <h2>My Profile Details</h2>
-        <div class="d-flex justify-content-center mb-3 position-relative" style="width: 100px; height: 100px; cursor: pointer; margin-left: 40%;" (click)="toggleEditAvatarOptionsDetailed()">
-          <div class="rounded-circle overflow-hidden" style="width: 100px; height: 100px;">
-            <img [src]="profileImage" alt="User Avatar" width="100" height="100" style="object-fit: cover; ">
+        <div
+          class="d-flex justify-content-center mb-3 position-relative"
+          style="width: 100px; height: 100px; margin-left: 40%"
+        >
+          <div
+            class="rounded-circle overflow-hidden"
+            style="width: 100px; height: 100px"
+          >
+            <img
+              [src]="profileImage"
+              alt="User Avatar"
+              width="100"
+              height="100"
+              style="object-fit: cover"
+            />
           </div>
-          <div class="position-absolute bottom-0 end-0 bg-secondary rounded-circle d-flex justify-content-center align-items-center" style="width: 24px; height: 24px;" (click)="toggleEditAvatarOptions()">
-            <i class="bi bi-pencil-fill text-white" style="font-size: 0.8rem;"></i>
+          <div
+            class="position-absolute bottom-0 end-0 bg-secondary rounded-circle d-flex justify-content-center align-items-center"
+            style="width: 24px; height: 24px; cursor: pointer"
+            (click)="toggleEditAvatarOptionsDetailed()"
+          >
+            <i
+              class="bi bi-pencil-fill text-white"
+              style="font-size: 0.8rem"
+            ></i>
           </div>
-          <div *ngIf="showAvatarOptionsDetailed" class="position-absolute bg-light border rounded shadow-sm p-2" style="top: 90px; left: 50%; transform: translateX(-50%);">
-            <button class="btn btn-sm btn-outline-danger mb-1 w-100" (click)="removeProfileImage()" [disabled]="profileImage === 'assets/userlogo001.png'">Remove Image</button>
-            <input type="file" class="form-control form-control-sm" (change)="uploadProfileImage($event)">
-        </div>
+          <div
+            *ngIf="showAvatarOptionsDetailed"
+            class="position-absolute bg-light border rounded shadow-sm p-2"
+            style="
+              bottom: -70px;
+              left: 50%;
+              transform: translateX(-50%);
+              z-index: 10;
+            "
+          >
+            <button
+              class="btn btn-sm btn-outline-danger mb-1 w-100"
+              (click)="removeProfileImage()"
+              [disabled]="profileImage === 'assets/userlogo001.png'"
+            >
+              Remove Image
+            </button>
+            <input
+              type="file"
+              class="form-control form-control-sm"
+              (change)="uploadProfileImage($event)"
+              accept="image/*"
+            />
+          </div>
         </div>
         <div class="mb-3">
-          <strong>User ID:</strong> {{ currentUser?.userId }} <i class="bi bi-pencil-fill ms-2" (click)="editDetailedField('userId')"></i>
-          <input type="text" class="form-control form-control-sm mt-1" *ngIf="editingDetailedField === 'userId'" [(ngModel)]="editedUserId">
+          <strong>User ID:</strong> {{ currentUser?.userId }}
+          <i
+            class="bi bi-pencil-fill ms-2"
+            (click)="editDetailedField('userId')"
+          ></i>
+          <input
+            type="text"
+            class="form-control form-control-sm mt-1"
+            *ngIf="editingDetailedField === 'userId'"
+            [(ngModel)]="editedUserId"
+          />
         </div>
         <div class="mb-3">
-          <strong>Email:</strong> {{ currentUser?.email }} <i class="bi bi-pencil-fill ms-2" (click)="editDetailedField('email')"></i>
-          <input type="email" class="form-control form-control-sm mt-1" *ngIf="editingDetailedField === 'email'" [(ngModel)]="editedEmail">
+          <strong>Username:</strong>
+          <span *ngIf="editingDetailedField !== 'all'">{{
+            currentUser?.username
+          }}</span>
+          <input
+            *ngIf="editingDetailedField === 'all'"
+            type="text"
+            class="form-control form-control-sm mt-1"
+            [(ngModel)]="editedUsername"
+          />
         </div>
         <div class="mb-3">
-          <strong>Role:</strong> {{ currentUser?.role }}
+          <strong>Email:</strong> {{ currentUser?.email }}
+          <i
+            class="bi bi-pencil-fill ms-2"
+            (click)="editDetailedField('email')"
+          ></i>
+          <input
+            type="email"
+            class="form-control form-control-sm mt-1"
+            *ngIf="editingDetailedField === 'email'"
+            [(ngModel)]="editedEmail"
+          />
         </div>
-        <div class="mb-3">
-          <strong>Username:</strong> {{ currentUser?.username }} <i class="bi bi-pencil-fill ms-2" (click)="editDetailedField('username')"></i>
-          <input type="text" class="form-control form-control-sm mt-1" *ngIf="editingDetailedField === 'username'" [(ngModel)]="editedUsername">
-        </div>
+        <div class="mb-3"><strong>Role:</strong> {{ currentUser?.role }}</div>
         <div class="text-end">
-          <button class="btn btn-sm btn-primary" (click)="saveDetailedChanges()">Save Changes</button>
+          <button class="btn btn-sm btn-secondary me-2" *ngIf="!editingDetailedField" (click)="editDetailedField('all')" >
+            Edit UserName
+          </button>
+          <button class="btn btn-sm btn-primary" (click)="saveDetailedChanges()">
+            Save Changes
+          </button>
         </div>
       </div>
     </div>

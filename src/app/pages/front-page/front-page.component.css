@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Boldonse&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+h1{
+    font: 700 2.5rem 'Boldonse', sans-serif;
+    letter-spacing: 0.5px;
+}
+.heroImage{
+    justify-content: center;
+    align-items: center;
+}
+
+#carImage
+{
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    margin-left: 30px;
+}

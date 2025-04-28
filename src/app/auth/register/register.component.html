@@ -1,0 +1,51 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow">
+          <div class="card-header bg-success text-white">
+            <h3 class="text-center">Register</h3>
+          </div>
+          <div class="card-body">
+            <form #registerForm="ngForm" (ngSubmit)="onSubmit()">
+              <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control" [(ngModel)]="user.username" name="username" required #usernameInput="ngModel">
+                <div *ngIf="formSubmitted && usernameInput.invalid" class="text-danger">Username is required.</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" [(ngModel)]="user.password" name="password" required #passwordInput="ngModel">
+                <div *ngIf="formSubmitted && passwordInput.invalid" class="text-danger">Password is required.</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" [(ngModel)]="user.email" name="email" required email #emailInput="ngModel">
+                <div *ngIf="formSubmitted && emailInput.invalid" class="text-danger">Email is required and must be valid.</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Role</label>
+                <select class="form-select" [(ngModel)]="user.role" name="role" (change)="onRoleChange()" required #roleInput="ngModel">
+                  <option value="CUSTOMER">Customer</option>
+                  <option value="AGENT">Agent</option>
+                  <option value="ADMIN">Admin</option>
+                </select>
+                <div *ngIf="formSubmitted && roleInput.invalid" class="text-danger">Role is required.</div>
+              </div>
+              <div class="mb-3" *ngIf="showSpecialCodeInput">
+                <label class="form-label">Special Code</label>
+                <input type="text" class="form-control" [(ngModel)]="specialCode" name="specialCode" required #codeInput="ngModel">
+                <div *ngIf="formSubmitted && codeInput.invalid" class="text-danger">Special code is required.</div>
+                <div *ngIf="invalidCode" class="text-danger">Invalid code.</div>
+              </div>
+              <div class="d-flex justify-content-between">
+                
+                <button type="reset" class="btn btn-secondary w-50 mx-2">Reset</button>
+                <button type="submit" class="btn btn-success w-50 mx-2">Register</button>
+              </div>
+              <button (click)="goBackToHome()" class="btn btn-success mt-4 mx-2">Back</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

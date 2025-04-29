@@ -1,0 +1,55 @@
+<div class="hero-section">
+    <div class="container text-center">
+      <h1>Secure Your Ride with the Best Insurance</h1>
+      <div class="hero-image">
+        <img src="assets/heroImage.png" alt="Hero Image" id="carImage" class="img-fluid">
+      </div>
+      <p>Compare and choose the best vehicle insurance plans in seconds.</p>
+      <a href="#quote" class="btn btn-primary btn-lg">Get a Quote</a>
+    </div>
+  </div>
+  
+  <section id="services" class="container py-5 text-center">
+    <h2>Our Services</h2>
+    <div class="row mt-4">
+      <div class="col-md-4">
+        <div class="card card-hover p-3 shadow">
+          <h5>Instant Quotes</h5>
+          <p>Compare quotes from multiple insurers instantly.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card card-hover p-3 shadow">
+          <h5>Hassle-free Claims</h5>
+          <p>Get your claims processed quickly with minimal paperwork.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card card-hover p-3 shadow">
+          <h5>24/7 Support</h5>
+          <p>Our customer service team is always available to assist you.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section id="quote" class="container py-5">
+    <h2 class="text-center">Get a Free Quote</h2>
+    <form class="mt-4" (ngSubmit)="getQuote()">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <input type="text" class="form-control" placeholder="Vehicle Model" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <input type="text" class="form-control" placeholder="Year of Manufacture" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <input type="text" class="form-control" placeholder="Your Location" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <button type="submit" class="btn btn-primary w-100">Get Quote</button>
+        </div>
+      </div>
+    </form>
+  </section>
+  

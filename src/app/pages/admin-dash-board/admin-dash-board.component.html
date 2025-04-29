@@ -1,0 +1,70 @@
+<div class="sidebar mt-4">
+  <h3>Admin Panel</h3>
+
+  <a (click)="showSection('dashboard')">Dashboard</a>
+
+  <a (click)="showSection('policy-holders')">Policy Holders</a>
+
+  <a (click)="showSection('policies')">Policies</a>
+
+  <a (click)="showSection('tickets')">Tickets</a>
+
+  <a (click)="showSection('agent-info')">Agent Info</a>
+
+  <a (click)="showSection('claim-requests')">Claim Requests</a>
+</div>
+
+<div class="content mb-5">
+  <div *ngIf="activeSection === 'dashboard'">
+    <h2>Dashboard</h2>
+
+    <div class="dashboard-cards row">
+      <div class="col-md-4" *ngFor="let card of dashboardCards">
+        <div
+          class="card card-hover p-2 shadow text-center text-white mt-3"
+          [ngClass]="card.bgColor"
+        >
+          <h5>{{ card.title }}</h5>
+
+          <h3>{{ card.value }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-container mt-4">
+      <h3>Policy Status Overview</h3>
+      <h5>Last 30 Days...</h5>
+      <canvas id="policyStatusChart"></canvas>
+    </div>
+  </div>
+
+  <div *ngIf="activeSection === 'policy-holders'">
+    <h2>Policy Holders</h2>
+
+    <p>Details of policyholders...</p>
+  </div>
+
+  <div *ngIf="activeSection === 'policies'">
+    <h2>Policies</h2>
+
+    <p>List of policies...</p>
+  </div>
+
+  <div *ngIf="activeSection === 'tickets'">
+    <h2>Tickets</h2>
+
+    <p>Manage ticket issues...</p>
+  </div>
+
+  <div *ngIf="activeSection === 'agent-info'">
+    <h2>Agent Info</h2>
+
+    <p>List of agents and their policies...</p>
+  </div>
+
+  <div *ngIf="activeSection === 'claim-requests'">
+    <h2>Claim Requests</h2>
+
+    <p>View and manage claim requests...</p>
+  </div>
+</div>

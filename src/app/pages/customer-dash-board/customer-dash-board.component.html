@@ -1,0 +1,52 @@
+<div class="sidebar mt-4">
+    <h3>Customer Panel</h3>
+    <a (click)="showSection('dashboard')">Dashboard</a>
+    <a (click)="showSection('my-policies')">My Policies</a>
+    <a (click)="showSection('Details')">Policy Details</a>
+    <a (click)="showSection('track-claim')">Track Claims</a>
+  </div>
+  
+  <div class="content mb-5">
+    <div *ngIf="activeSection === 'dashboard'">
+      <h2>Dashboard</h2>
+      <div class="dashboard-cards row">
+        <div class="col-md-4" *ngFor="let card of dashboardCards">
+          <div class="card shadow-sm p-3 bg-primary text-white text-center mt-3" style="height: 100px;">
+            <h5>{{ card.title }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div *ngIf="activeSection === 'my-policies'">
+      <h3 class="mt-4">My Policies</h3>
+      <table class="table table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th>Policy ID</th>
+            <th>Policy Number</th>
+            <th>Issue Description</th>
+            <th>Created Date</th>
+            <th>Resolved Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ticket of policies">
+            <td>{{ ticket.id }}</td>
+            <td>{{ ticket.number }}</td>
+            <td>{{ ticket.issue }}</td>
+            <td>{{ ticket.createdDate }}</td>
+            <td>{{ ticket.resolvedDate || 'Pending' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <div *ngIf="activeSection === 'Details'">
+      <h3>Policy Details...</h3>
+    </div>
+
+    <div *ngIf="activeSection === 'track-claim'">
+        <h3>Tracking Policy...</h3>
+      </div>
+  </div>

@@ -1,0 +1,172 @@
+.navbar-brand img {
+  height: 40px;
+}
+
+.user-profile-button {
+  background: transparent;
+  border: none;
+}
+
+.user-profile-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0; /* Align to the right */
+  background-color: #343a40;
+  padding: 10px;
+  list-style: none;
+  width: 150px; /* Adjust as needed */
+  z-index: 1000;
+}
+
+.nav-item:hover .user-profile-menu {
+  display: block;
+}
+
+.user-profile-menu li a {
+  display: block;
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+}
+
+.user-profile-menu li a:hover {
+  background-color: #495057;
+}
+
+.profile-card {
+  position: absolute;
+  top: 100%;
+  right: 0; /* Align to the right */
+  width: 300px;
+  z-index: 1000;
+  background-color: white;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Removed max-height and overflow-y */
+}
+
+.nav-item.position-relative {
+  position: relative;
+}
+
+.hover-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border: none;
+  
+  z-index: 1000;
+  padding: 0;
+  list-style: none;
+  width: 200px;
+}
+
+.nav-item:hover .hover-menu {
+  display: block;
+}
+
+.hover-menu li a {
+  display: block;
+  padding: 8px 16px;
+  text-decoration: none;
+  color: black;
+  white-space: nowrap;
+}
+
+.hover-menu li a:hover {
+  background-color: #343a40;
+  color: white;
+}
+
+.hover-menu li a.disabled {
+  pointer-events: none; /* Disable pointer events */
+  opacity: 0.5; /* Reduce opacity */
+  cursor: not-allowed; /* Change cursor */
+}
+
+.hover-menu li a.disabled:hover {
+  background-color: transparent; /* Remove background color on hover */
+  color: black; /* Revert to default text color */
+}
+
+#logout {
+  height: 100px;
+}
+
+/* Existing CSS */
+
+.detailed-profile-card {
+  position: fixed; /* To position it relative to the viewport */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* To center it */
+  background-color: white;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1001; /* Ensure it's on top of the profile card */
+  width: 500px; /* Increased width */
+  max-height: 90vh; /* Increased max height */
+  overflow-y: auto;
+  display: none; /* Initially hidden */
+  padding: 20px; /* Add some padding inside */
+}
+
+.detailed-profile-card.show {
+  display: block;
+}
+
+.detailed-profile-card h2 {
+  margin-bottom: 1.5rem; /* More space after title */
+  text-align: center; /* Center the title */
+}
+
+.detailed-profile-card .form-control-sm {
+  margin-top: 0.3rem;
+}
+
+.detailed-profile-card .bi-pencil-fill {
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.detailed-profile-card strong {
+  display: inline-block;
+  width: 100px; /* Adjust width for better alignment */
+  margin-right: 0.5rem;
+}
+
+.detailed-profile-card .position-relative > .rounded-circle {
+  border: 1px solid #ccc;
+}
+
+.detailed-profile-card .position-absolute.bottom-0.end-0 {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.detailed-profile-card .position-absolute.bottom-0.end-0 img {
+  width: 80%;
+  height: 80%;
+  object-fit: cover;
+}
+
+.detailed-profile-card .position-absolute.bg-light {
+  bottom: -80px; /* Adjust position of edit options */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px; /* Adjust width of edit options */
+}
+
+/* Ensure the main profile card has a lower z-index if needed */
+.profile-card {
+  /* Existing styles */
+  z-index: 1000; /* Or lower than .detailed-profile-card */
+}

@@ -1,0 +1,239 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-success text-white">
+          <h3 class="text-center">Register</h3>
+        </div>
+        <div class="card-body">
+          <form #registerForm="ngForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label class="form-label">First Name</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="user.firstName"
+                name="firstName"
+                required
+                #firstNameInput="ngModel"
+              />
+              <div
+                *ngIf="formSubmitted && firstNameInput.invalid"
+                class="text-danger"
+              >
+                First name is required.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Last Name</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="user.lastName"
+                name="lastName"
+                required
+                #lastNameInput="ngModel"
+              />
+              <div
+                *ngIf="formSubmitted && lastNameInput.invalid"
+                class="text-danger"
+              >
+                Last name is required.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                [(ngModel)]="user.email"
+                name="email"
+                required
+                #emailInput="ngModel"
+              />
+              <div
+                *ngIf="formSubmitted && emailInput.invalid"
+                class="text-danger"
+              >
+                Email is required.
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                [(ngModel)]="user.password"
+                name="password"
+                required
+                #passwordInput="ngModel"
+              />
+              <div
+                *ngIf="formSubmitted && passwordInput.invalid"
+                class="text-danger"
+              >
+                Password is required.
+              </div>
+            </div>
+            
+
+            <div class="mb-3">
+              <label class="form-label">Phone Number</label>
+              <input
+                type="tel"
+                class="form-control"
+                [(ngModel)]="user.phoneNumber"
+                name="phoneNumber"
+                required
+                #phoneInput="ngModel"
+              />
+              <div
+                *ngIf="formSubmitted && phoneInput.invalid"
+                class="text-danger"
+              >
+                Phone number is required.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Gender</label>
+              <select
+                class="form-select"
+                [(ngModel)]="user.gender"
+                name="gender"
+                required
+                #genderInput="ngModel"
+              >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+              <div
+                *ngIf="formSubmitted && genderInput.invalid"
+                class="text-danger"
+              >
+                Gender is required.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">City</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="user.city"
+                name="city"
+                required
+                #cityInput="ngModel"
+              />
+              <div
+                *ngIf="formSubmitted && cityInput.invalid"
+                class="text-danger"
+              >
+                City is required.
+              </div>
+            </div>
+
+            <!-- Keep your existing role and special code sections -->
+            <!-- Add error message display -->
+            <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+              {{ errorMessage }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Role</label>
+              <select
+                class="form-select"
+                [(ngModel)]="user.role"
+                name="role"
+                (change)="onRoleChange()"
+                required
+                #roleInput="ngModel"
+              >
+                <option value="CUSTOMER">Customer</option>
+                <option value="AGENT">Agent</option>
+                
+              </select>
+              <div
+                *ngIf="formSubmitted && roleInput.invalid"
+                class="text-danger"
+              >
+                Role is required.
+              </div>
+            </div>
+
+            <div class="mb-3" *ngIf="user.role === 'AGENT'">
+              <label class="form-label">Special Code</label>
+              <input type="text" class="form-control" [(ngModel)]="specialCode" name="specialCode" required #codeInput="ngModel">
+              <div *ngIf="formSubmitted && codeInput.invalid" class="text-danger">Special code is required.</div>
+              <div *ngIf="invalidCode" class="text-danger">Invalid code.</div>
+            </div>
+
+            <div class="mb-3">
+              <div class="input-group">
+                <input
+                  type="email"
+                  class="form-control"
+                  placeholder="Enter your email"
+                  [(ngModel)]="user.email"
+                  name="email"
+                  [readonly]="otpSent"
+                  required
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  (click)="sendOTP()"
+                  [disabled]="!user.email || otpSent"
+                >
+                  {{ otpSent ? 'OTP Sent' : 'Send OTP' }}
+                </button>
+              </div>
+              <div *ngIf="errorMessage && !otpVerified" class="text-danger mt-2">{{ errorMessage }}</div>
+              <div *ngIf="successMessage && otpSent && !otpVerified" class="text-success mt-2">{{ successMessage }}</div>
+            </div>
+
+            <div *ngIf="showOtpSection && otpSent" class="mb-3">
+              <div class="input-group">
+                <!-- OTP Input -->
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter OTP"
+                  [(ngModel)]="enteredOtp"
+                  name="otp"                             
+                  maxlength="6"
+                  required
+                />
+                <!-- Verify OTP Button -->
+                <button
+                  type="button"
+                  class="btn btn-outline-success"
+                  (click)="verifyOTP()"
+                  [disabled]="!enteredOtp || enteredOtp.length !== 6" >
+                  Verify OTP
+                </button>
+              </div>
+              <!-- Success and Error Messages -->
+              <div *ngIf="otpVerified" class="text-success mt-2">OTP verified successfully!</div>
+              <div *ngIf="errorMessage && !otpVerified" class="text-danger mt-2">{{ errorMessage }}</div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <button type="reset" class="btn btn-secondary w-50 mx-2">
+                Reset
+              </button>
+              <button type="submit" class="btn btn-success w-50 mx-2">
+                Register
+              </button>
+            </div>
+            <button (click)="goBackToHome()" class="btn btn-success mt-4 mx-2">
+              Back
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

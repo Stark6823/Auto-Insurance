@@ -1,0 +1,68 @@
+<div class="sidebar mt-4">
+    <h3>Agent Panel</h3>
+    <a (click)="showSection('dashboard')">Dashboard</a>
+    <a (click)="showSection('view-tickets')">View Tickets</a>
+    <a (click)="showSection('validate-tickets')">Validate Tickets</a>
+  </div>
+  
+  <div class="content mb-5">
+    <div *ngIf="activeSection === 'dashboard'">
+      <h2>Dashboard</h2>
+      <div class="dashboard-cards row">
+        <div class="col-md-4" *ngFor="let card of dashboardCards">
+          <div class="card shadow-sm p-3 bg-primary text-white text-center mt-3" style="height: 100px;">
+            <h5>{{ card.title }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div *ngIf="activeSection === 'view-tickets'">
+      <h3 class="mt-4">View Tickets</h3>
+      <table class="table table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th>Ticket ID</th>
+            <th>User ID</th>
+            <th>Issue Description</th>
+            <th>Created Date</th>
+            <th>Resolved Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ticket of tickets">
+            <td>{{ ticket.id }}</td>
+            <td>{{ ticket.userId }}</td>
+            <td>{{ ticket.issue }}</td>
+            <td>{{ ticket.createdDate }}</td>
+            <td>{{ ticket.resolvedDate || 'Pending' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <div *ngIf="activeSection === 'validate-tickets'">
+      <h3 class="mt-4">Validate Tickets</h3>
+      <table class="table table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th>Ticket ID</th>
+            <th>User ID</th>
+            <th>Issue Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ticket of pendingTickets">
+            <td>{{ ticket.id }}</td>
+            <td>{{ ticket.userId }}</td>
+            <td>{{ ticket.issue }}</td>
+            <td>
+              <button class="btn btn-success me-2" (click)="acceptTicket(ticket.id)">Accept</button>
+              <button class="btn btn-danger" (click)="declineTicket(ticket.id)">Decline</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

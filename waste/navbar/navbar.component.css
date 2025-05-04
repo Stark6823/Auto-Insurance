@@ -1,0 +1,30 @@
+.position-relative {
+    position: relative;
+  }
+  
+  .hover-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #343a40; /* Dark background matching navbar */
+    padding: 10px;
+    list-style: none;
+    width: 200px; /* Adjust as needed */
+    z-index: 1000;
+  }
+  
+  .nav-item:hover .hover-menu {
+    display: block;
+  }
+  
+  .hover-menu li a {
+    display: block;
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+  }
+  
+  .hover-menu li a:hover {
+    background-color: #495057; /* Slightly lighter hover background */
+  }

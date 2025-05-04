@@ -1,0 +1,107 @@
+<div class="sidebar mt-4">
+  <h3>Admin Panel</h3>
+
+  <a (click)="showSection('dashboard')">Dashboard</a>
+
+  <a (click)="showSection('policy-holders')">Policy Holders</a>
+
+  <a (click)="showSection('policies')">Policies</a>
+
+  <a (click)="showSection('tickets')">Tickets</a>
+
+  <a (click)="showSection('agent-info')">Agent Info</a>
+
+  <a (click)="showSection('claim-requests')">Claim Requests</a>
+</div>
+
+<div class="content mb-5">
+  <div *ngIf="activeSection === 'dashboard'">
+    <h2>Dashboard</h2>
+
+    <div class="dashboard-cards row">
+      <div class="col-md-4" *ngFor="let card of dashboardCards">
+        <div
+          class="card card-hover p-2 shadow text-center text-white mt-3"
+          [ngClass]="card.bgColor"
+        >
+          <h5>{{ card.title }}</h5>
+
+          <h3>{{ card.value }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-container mt-4">
+      <h3>Policy Status Overview</h3>
+      <h5>Last 30 Days...</h5>
+      <canvas id="policyStatusChart"></canvas>
+    </div>
+  </div>
+
+  <div *ngIf="activeSection === 'policy-holders'">
+    <h2>Policy Holders</h2>
+
+    <p>Details of policyholders...</p>
+  </div>
+
+  <div *ngIf="activeSection === 'policies'">
+    <h2>Policies</h2>
+
+    <p>List of policies...</p>
+  </div>
+
+  <div *ngIf="activeSection === 'tickets'">
+    <h2>Tickets</h2>
+
+    <p>Manage ticket issues...</p>
+  </div>
+
+  <div *ngIf="activeSection === 'agent-info'">
+    <h2>Agent Information</h2>
+    
+    <div *ngIf="isLoading" class="text-center mt-4">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  
+    <div *ngIf="!isLoading" class="table-responsive mt-3">
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Agent ID</th>
+            <th>Agent Name</th>
+            <th>Email</th>
+            <th>Registered At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let agent of agents">
+            <td>{{ agent._id }}</td>
+            <td>{{ agent.firstName }} {{ agent.lastName }}</td>
+            <td>{{ agent.email }}</td>
+            <td>{{ agent.createdAt | date:'medium' }}</td>
+            <td>
+              <button *ngIf="!approvedAgents.has(agent._id)" 
+                      class="btn btn-success btn-sm me-2" 
+                      (click)="approveAgent(agent._id)">
+                Approve
+              </button>
+              <span *ngIf="approvedAgents.has(agent._id)" class="text-success">Approved</span>
+              <button class="btn btn-danger btn-sm" (click)="deleteAgent(agent._id)">
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div *ngIf="activeSection === 'claim-requests'">
+    <h2>Claim Requests</h2>
+
+    <p>View and manage claim requests...</p>
+  </div>
+</div>

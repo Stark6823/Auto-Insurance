@@ -172,7 +172,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.currentUser && this.currentUser._id) {
       const updateData: any = {};
       
-      // Only update fields that are being edited
+      
       if (this.editingDetailedField === 'all' || this.editingDetailedField === 'username') {
         const [firstName, ...lastNameArr] = this.editedUsername.split(' ');
         updateData.firstName = firstName;
@@ -191,7 +191,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         updateData.city = this.editedCity;
       }
   
-      // Preserve profile image in update data
+      
       if (this.currentUser.profileImage) {
         updateData.profileImage = this.currentUser.profileImage;
       }
@@ -220,7 +220,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       return;
     }
   
-    // Check file size (2MB max)
+    
     if (file.size > 2 * 1024 * 1024) {
       console.error('File too large');
       return;
@@ -278,10 +278,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }).subscribe({
       next: (response) => {
         if (response.success) {
-          // Set profileImage to default and bypass caching
+          
           console.log('image Updated:', response.user.profileImage);
           this.profileImage = '';          
-          // Update local storage and emit event
+          
           if (this.currentUser) {
             this.currentUser.profileImage = this.profileImage;
             localStorage.setItem('currentUser', JSON.stringify(this.currentUser));

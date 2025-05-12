@@ -11,11 +11,11 @@
   display: none;
   position: absolute;
   top: 100%;
-  right: 0; /* Align to the right */
+  right: 0; 
   background-color: #343a40;
   padding: 10px;
   list-style: none;
-  width: 150px; /* Adjust as needed */
+  width: 150px; 
   z-index: 1000;
 }
 
@@ -37,13 +37,13 @@
 .profile-card {
   position: absolute;
   top: 100%;
-  right: 0; /* Align to the right */
+  right: 0; 
   width: 300px;
   z-index: 1000;
   background-color: white;
   border: 1px solid #dee2e6;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  /* Removed max-height and overflow-y */
+ 
 }
 
 .nav-item.position-relative {
@@ -82,36 +82,36 @@
 }
 
 .hover-menu li a.disabled {
-  pointer-events: none; /* Disable pointer events */
-  opacity: 0.5; /* Reduce opacity */
-  cursor: not-allowed; /* Change cursor */
+  pointer-events: none;
+  opacity: 0.5; 
+  cursor: not-allowed; 
 }
 
 .hover-menu li a.disabled:hover {
-  background-color: transparent; /* Remove background color on hover */
-  color: black; /* Revert to default text color */
+  background-color: transparent; 
+  color: black; 
 }
 
 #logout {
   height: 100px;
 }
 
-/* Existing CSS */
+
 
 .detailed-profile-card {
-  position: fixed; /* To position it relative to the viewport */
+  position: fixed; 
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); /* To center it */
+  transform: translate(-50%, -50%); 
   background-color: white;
   border: 1px solid #dee2e6;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1001; /* Ensure it's on top of the profile card */
-  width: 500px; /* Increased width */
-  max-height: 90vh; /* Increased max height */
+  z-index: 1001; 
+  width: 500px; 
+  max-height: 90vh; 
   overflow-y: auto;
-  display: none; /* Initially hidden */
-  padding: 20px; /* Add some padding inside */
+  display: none; 
+  padding: 20px; 
 }
 
 .detailed-profile-card.show {
@@ -119,8 +119,8 @@
 }
 
 .detailed-profile-card h2 {
-  margin-bottom: 1.5rem; /* More space after title */
-  text-align: center; /* Center the title */
+  margin-bottom: 1.5rem; 
+  text-align: center; 
 }
 
 .detailed-profile-card .form-control-sm {
@@ -134,7 +134,7 @@
 
 .detailed-profile-card strong {
   display: inline-block;
-  width: 100px; /* Adjust width for better alignment */
+  width: 100px; 
   margin-right: 0.5rem;
 }
 
@@ -159,14 +159,14 @@
 }
 
 .detailed-profile-card .position-absolute.bg-light {
-  bottom: -80px; /* Adjust position of edit options */
+  bottom: -80px; 
   left: 50%;
   transform: translateX(-50%);
-  width: 200px; /* Adjust width of edit options */
+  width: 200px; 
 }
 
-/* Ensure the main profile card has a lower z-index if needed */
+
 .profile-card {
-  /* Existing styles */
-  z-index: 1000; /* Or lower than .detailed-profile-card */
+  
+  z-index: 1000;
 }

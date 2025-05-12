@@ -25,7 +25,8 @@ export class RegisterComponent {
   showOtpSection = false;
   enteredOtp: string = '';
   otpTimer = 0;
-  // Multi-step form tracking
+ 
+  
   currentStep: number = 1;
   confirmPassword: string = '';
   private timerSubscription?: Subscription;
@@ -49,7 +50,7 @@ export class RegisterComponent {
     });
   }
 
-  // Navigation methods for multi-step form
+  
   nextStep() {
     if (this.currentStep === 1 && !this.isPersonalDetailsValid()) {
       this.formSubmitted = true;
@@ -67,7 +68,7 @@ export class RegisterComponent {
     this.currentStep--;
   }
 
-  // Validation methods for each step
+  
   isPersonalDetailsValid(): boolean {
     return !!(
       this.user.firstName &&
@@ -90,17 +91,16 @@ export class RegisterComponent {
     );
   }
 
-  // Password strength methods
+  
   getPasswordStrength(): number {
     if (!this.user.password) return 0;
     
     let strength = 0;
     
-    // Length check
     if (this.user.password.length >= 8) strength += 25;
     else if (this.user.password.length >= 6) strength += 15;
     
-    // Character variety checks
+  
     if (/[A-Z]/.test(this.user.password)) strength += 25;
     if (/[0-9]/.test(this.user.password)) strength += 25;
     if (/[^A-Za-z0-9]/.test(this.user.password)) strength += 25;
@@ -115,7 +115,7 @@ export class RegisterComponent {
     return 'Strong';
   }
 
-  // OTP methods
+  
   sendRegistrationOTP() {
     if (!this.user.email || !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(this.user.email)) {
       this.errorMessage = 'Please enter a valid email';
@@ -152,16 +152,16 @@ export class RegisterComponent {
     this.errorMessage = '';
     this.successMessage = '';
 
-    // Call the AuthService to verify the OTP
+    
     this.authService.verifyOTP(email, otp).subscribe({
       next: (response) => {
-        console.log(response); // Log response for debugging
+        console.log(response); 
         this.isLoading = false;
         this.successMessage = 'OTP verified successfully!';
         this.otpVerified = true;
       },
       error: (error) => {
-        console.error(error); // Log error for debugging
+        console.error(error); 
         this.isLoading = false;
         this.errorMessage = 'Invalid or expired OTP. Please try again.';
         this.otpVerified = false;
@@ -205,7 +205,7 @@ export class RegisterComponent {
       return;
     }
 
-    // If you have special code logic for certain roles
+    
     if (this.user.role === 'AGENT') {
       if (!this.specialCode || !this.validateCode()) {
         this.invalidCode = true;
@@ -242,8 +242,8 @@ export class RegisterComponent {
   }
 
   validateCode(): boolean {
-    // Implement your special code validation logic here
-    return this.specialCode === 'SECRET123'; // Example
+    
+    return this.specialCode === 'SECRET123'; 
   }
 
 

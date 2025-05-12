@@ -117,14 +117,9 @@
               height="80"
               style="object-fit: cover"
             />
-            <!-- <div class="position-absolute bottom-0 end-0 bg-secondary rounded-circle d-flex justify-content-center align-items-center" style="width: 24px; height: 24px;" (click)="toggleEditAvatarOptions()">
-              <i class="bi bi-pencil-fill text-white" style="font-size: 0.8rem;"></i>
-            </div> -->
+           
           </div>
-          <!-- <div *ngIf="showAvatarOptions" class="position-absolute bg-light border rounded shadow-sm p-2" style="top: 90px;">
-            <button class="btn btn-sm btn-outline-danger mb-1 w-100" (click)="removeProfileImage()" [disabled]="profileImage === 'assets/userlogo001.png'">Remove Image</button>
-            <input type="file" class="form-control form-control-sm" (change)="uploadProfileImage($event)">
-          </div> -->
+          
           <h2 class="mt-2">
             {{ currentUser?.firstName }} {{ currentUser?.lastName }}
           </h2>
@@ -217,7 +212,7 @@
               currentUser?._id
             }}</span>
           </div>
-          <!-- Username -->
+          
           <div class="mb-3">
             <strong>Username:</strong>
             <span

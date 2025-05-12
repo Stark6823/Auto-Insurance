@@ -6,7 +6,7 @@
           <h3 class="text-center mb-0">Create Account</h3>
         </div>
         
-        <!-- Progress Tracker -->
+       
         <div class="progress-container px-4 pt-4">
           <div class="stepper-wrapper">
             <div class="stepper-item" [ngClass]="{'completed': currentStep > 1, 'active': currentStep === 1}">
@@ -36,11 +36,11 @@
         <div class="card-body">
           <form #registerForm="ngForm" (ngSubmit)="onSubmit()">
             
-            <!-- Step 1: Personal Details -->
+           
             <div *ngIf="currentStep === 1" class="step-content">
               <h4 class="mb-4 text-center text-success">Personal Information</h4>
               
-              <!-- First Name and Last Name in the same row -->
+              
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label class="form-label">First Name</label>
@@ -118,7 +118,7 @@
                 </div>
               </div>
 
-              <!-- Gender as radio buttons -->
+              
               <div class="mb-3">
                 <label class="form-label d-block">Gender</label>
                 <div class="form-check form-check-inline">
@@ -183,7 +183,7 @@
                 </div>
               </div>
 
-              <!-- Role selection with improved styling -->
+              
               <div class="mb-3">
                 <label class="form-label">Role</label>
                 <select
@@ -206,7 +206,7 @@
                 </div>
               </div>
 
-              <!-- Special code with improved styling -->
+              
               <div class="mb-3" *ngIf="user.role === 'AGENT'">
                 <label class="form-label">Special Code</label>
                 <input 
@@ -229,7 +229,7 @@
               </div>
             </div>
             
-            <!-- Step 2: Password -->
+           
             <div *ngIf="currentStep === 2" class="step-content">
               <h4 class="mb-4 text-center text-success">Security Information</h4>
               
@@ -302,7 +302,7 @@
               </div>
             </div>
             
-            <!-- Step 3: Verification -->
+            
             <div *ngIf="currentStep === 3" class="step-content">
               <h4 class="mb-4 text-center text-success">Email Verification</h4>
               
@@ -319,21 +319,19 @@
                     (click)="sendRegistrationOTP()"
                     [disabled]="!user.email || otpSent || isLoading"
                   >
-                    <!-- Loading Spinner (inside button) -->
+                    
                     <span *ngIf="isLoading" class="spinner-container">
                       <span class="spinner-border spinner-border-sm" role="status">
                       </span>
                       <span>Sending Otp...</span>
                     </span>
                     
-                    <!-- Button Content (hidden during loading) -->
                     <span [class.invisible]="isLoading">
                       <i class="fas fa-paper-plane me-2"></i>
                       {{ otpSent ? 'OTP Sent' : 'Send OTP' }}
                     </span>
                   </button>
               
-                  <!-- Error and Success Messages -->
                   <div *ngIf="errorMessage && !otpVerified" class="text-danger text-center mt-2">
                     {{ errorMessage }}
                   </div>
@@ -393,7 +391,7 @@
               </div>
             </div>
             
-            <!-- Error message display -->
+            
             <div *ngIf="errorMsg" class="alert alert-danger mt-3">
               {{ errorMsg }}
             </div>

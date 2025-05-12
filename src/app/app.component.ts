@@ -31,27 +31,26 @@ export class AppComponent {
         this.hideHeaderFooter = this.router.url.includes('/login') || this.router.url.includes('/register');
       });
 
-   } // Check if the user is logged in
+   } 
 
   isLoggedIn(): boolean {
     return this.authService.getCurrentUser() !== null;
-  } // Check if the user is an admin
+  } 
 
   isAdmin(): boolean {
     return this.authService.hasRole('ADMIN');
-  } // Check if the user is an agent
-
+  } 
   isAgent(): boolean {
     return this.authService.hasRole('AGENT');
-  } // Check if the user is a customer
+  } 
 
   isCustomer(): boolean {
     return this.authService.hasRole('CUSTOMER');
-  } // Logout the user
+  } 
 
   logout() {
     this.authService.logout();
 
-    window.location.href = '/login'; // Redirect to login page
+    window.location.href = '/login'; 
   }
 }

@@ -1,12 +1,12 @@
 // login.component.html
 <div class="main-container">
-  <!-- Left sidebar with decorative elements -->
+  
   <div class="sidebar">
     <div class="sidebar-content">
       <h2 class="welcome-text">Welcome Back!</h2>
       <p class="welcome-subtext">We're glad to see you again. Access your account and continue your journey.</p>
     </div>
-    <!-- Animated background shapes -->
+    
     <div class="shapes">
       <div class="shape shape-1"></div>
       <div class="shape shape-2"></div>
@@ -14,9 +14,9 @@
     </div>
   </div>
   
-  <!-- Right content area with forms -->
+ 
   <div class="content">
-    <!-- Login Form -->
+    
     <div class="form-container" *ngIf="!forgotPasswordFlag && !otpVerificationFlag">
       <div class="form-header">
         <h1>Sign In</h1>
@@ -89,7 +89,7 @@
       </form>
     </div>
     
-    <!-- Forgot Password Form -->
+    
     <div class="form-container" *ngIf="forgotPasswordFlag && !otpVerificationFlag">
       <div class="form-header">
         <h1>Reset Password</h1>
@@ -189,7 +189,7 @@
       </form>
     </div>
     
-    <!-- OTP Verification Form -->
+   
     <div class="form-container" *ngIf="otpVerificationFlag">
       <div class="form-header">
         <h1>Verify OTP</h1>
@@ -242,7 +242,7 @@
       </form>
     </div>
     
-    <!-- Toast notification -->
+    
     <div class="toast" [class.visible]="toastVisible" [class.success]="toastType === 'success'" [class.error]="toastType === 'error'">
       <div class="toast-content">
         <i class="toast-icon" [class.bi-check-circle]="toastType === 'success'" [class.bi-exclamation-circle]="toastType === 'error'"></i>

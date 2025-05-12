@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { Subscription, interval } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +14,7 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
   email = '';
   password = '';
   newPassword = '';
@@ -20,32 +22,77 @@ export class LoginComponent {
   otp = '';
   forgotPasswordFlag = false;
   otpVerificationFlag = false;
-  errorMessage: string | null = null;
+  
+  
+  isLoading = false;
+  isOtpLoading = false;
+  isVerifying = false;
+  showPassword = false;
+  showNewPassword = false;
+  showConfirmPassword = false;
+  passwordsDoNotMatch = false;
+  otpTimer = 0;
+  
+
+  toastVisible = false;
+  toastMessage = '';
+  toastType: 'success' | 'error' = 'success';
+  toastDuration = 5000;
+  
+  private timerSubscription?: Subscription;
 
   constructor(
     private auth: AuthService, 
     private router: Router,
     private http: HttpClient
   ) {}
+  
+  ngOnInit() {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const user = JSON.parse(currentUser);
+      this.router.navigate(
+        [`${user.role.toLowerCase()}`],
+        { queryParams: { userId: user._id, name: user.firstName || user.lastName || '' } }
+      );
+    }
+  }
+  
+  ngOnDestroy() {
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
+  }
 
   onSubmit() {
+    if (!this.email || !this.password) {
+      this.showToast('Please fill in all required fields', 'error');
+      return;
+    }
+    
+    this.isLoading = true;
     this.auth.login(this.email, this.password).subscribe({
       next: (response) => {
         const user = response?.user || response;
         if (user && user.role) {
+          this.showToast('Login successful! Redirecting...','success');
           localStorage.setItem('currentUser', JSON.stringify(user));
-          this.router.navigate(
-            [`${user.role.toLowerCase()}`],
-            { queryParams: { userId: user._id || user._id, name: user.firstName || user.lastName|| '' } }
-          );
+          
+
+          setTimeout(() => {
+            this.router.navigate(
+              [`${user.role.toLowerCase()}`],
+              { queryParams: { userId: user._id || user._id, name: user.firstName || user.lastName || '' } }
+            );
+          }, 1000);
         } else {
-          this.errorMessage = 'Login failed: User role not found.';
-          alert(this.errorMessage);
+          this.showToast('Login failed: User role not found.', 'error');
         }
+        this.isLoading = false;
       },
       error: (err) => {
-        this.errorMessage = 'Login failed!';
-        alert(this.errorMessage);
+        this.showToast('Login failed! Please check your credentials.', 'error');
+        this.isLoading = false;
         console.error('Login error:', err);
       }
     });
@@ -57,6 +104,7 @@ export class LoginComponent {
 
   forgotPassword() {
     this.forgotPasswordFlag = true;
+    this.passwordsDoNotMatch = false;
   }
 
   cancelReset() {
@@ -65,53 +113,72 @@ export class LoginComponent {
     this.newPassword = '';
     this.reenterPassword = '';
     this.otp = '';
+    this.passwordsDoNotMatch = false;
+    
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+      this.timerSubscription = undefined;
+    }
   }
 
   sendPasswordResetOTP() {
-    if (this.newPassword !== this.reenterPassword) {
-      alert('Passwords do not match.');
+    if (!this.email) {
+      this.showToast('Please enter your email address', 'error');
       return;
     }
+    
+    if (this.newPassword !== this.reenterPassword) {
+      this.passwordsDoNotMatch = true;
+      return;
+    }
+    
+    this.passwordsDoNotMatch = false;
+    this.isOtpLoading = true;
 
-    this.http.post('http://localhost:3000/api/auth/send-otp', { email: this.email })
+    this.auth.sendOTP(this.email)
       .subscribe({
         next: (response: any) => {
           if (response.success) {
             this.otpVerificationFlag = true;
             this.forgotPasswordFlag = false;
-            alert('OTP sent to your email. Please check your inbox.');
+            this.showToast('OTP sent to your email. Please check your inbox.', 'success');
+            this.startOtpTimer();
           } else {
-            alert('Failed to send OTP. Please try again.');
+            this.showToast('Failed to send OTP. Please try again.', 'error');
           }
+          this.isOtpLoading = false;
         },
         error: (err) => {
           console.error('OTP send error:', err);
-          alert('Failed to send OTP. Please try again.');
+          this.showToast('Failed to send OTP. Please check your email and try again.', 'error');
+          this.isOtpLoading = false;
         }
       });
   }
 
   verifyAndResetPassword() {
     if (!this.otp) {
-      alert('Please enter OTP');
+      this.showToast('Please enter OTP', 'error');
       return;
     }
+    
+    this.isVerifying = true;
 
-    this.http.post('http://localhost:3000/api/auth/verify-otp', {
-      email: this.email,
-      otp: this.otp
-    }).subscribe({
+    this.auth.verifyOTP(this.email, this.otp).
+    subscribe({
       next: (response: any) => {
         if (response.message === 'OTP verified successfully') {
-          // OTP verified, now update password
+          
           this.updatePasswordInDatabase();
         } else {
-          alert('OTP verification failed. Please try again.');
+          this.showToast('OTP verification failed. Please try again.', 'error');
+          this.isVerifying = false;
         }
       },
       error: (err) => {
         console.error('OTP verification error:', err);
-        alert('OTP verification failed. Please try again.');
+        this.showToast('OTP verification failed. Please try again.', 'error');
+        this.isVerifying = false;
       }
     });
   }
@@ -119,13 +186,82 @@ export class LoginComponent {
   updatePasswordInDatabase() {
     this.auth.updatePassword(this.email, this.newPassword).subscribe({
       next: (response) => {
-        alert('Password reset successfully! Please login with your new password.');
-        this.cancelReset();
+        this.showToast('Password reset successfully! Please login with your new password.', 'success');
+        setTimeout(() => {
+          this.cancelReset();
+        }, 1500);
+        this.isVerifying = false;
       },
       error: (err) => {
         console.error('Password update error:', err);
-        alert('Failed to update password. Please try again.');
+        this.showToast('Failed to update password. Please try again.', 'error');
+        this.isVerifying = false;
       }
     });
+  }
+  
+  /**
+   * @param message 
+   * @param type 
+   */
+  showToast(message: string, type: 'success' | 'error') {
+    this.toastMessage = message;
+    this.toastType = type;
+    this.toastVisible = true;
+    
+  
+    setTimeout(() => {
+      this.toastVisible = false;
+    }, this.toastDuration);
+  }
+  
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+  
+  
+  toggleNewPasswordVisibility() {
+    this.showNewPassword = !this.showNewPassword;
+  }
+  
+  toggleConfirmPasswordVisibility() {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+  
+ 
+  startOtpTimer() {
+    this.otpTimer = 30; 
+    
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
+    
+    this.timerSubscription = interval(1000)
+      .pipe(take(61))
+      .subscribe(() => {
+        if (this.otpTimer > 0) {
+          this.otpTimer--;
+        }
+      });
+  }
+
+  resendOTP() {
+    if (this.otpTimer > 0) return;
+    
+    this.auth.sendOTP(this.email)
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.showToast('OTP resent to your email', 'success');
+            this.startOtpTimer();
+          } else {
+            this.showToast('Failed to resend OTP', 'error');
+          }
+        },
+        error: (err) => {
+          console.error('OTP resend error:', err);
+          this.showToast('Failed to resend OTP', 'error');
+        }
+      });
   }
 }

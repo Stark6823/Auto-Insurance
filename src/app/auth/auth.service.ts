@@ -51,6 +51,13 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/send-otp`, { email });
   }
 
+
+  sendRegistrationOTP(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/send-registration-otp`, { email });
+  }
+  
+  
+
   verifyOTP(email: string, otp: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/verify-otp`, { email, otp });
   }
@@ -63,7 +70,7 @@ export class AuthService {
   updateUser(userId: string, userData: any): Observable<any> {
     const formData = new FormData();
     
-    // Handle profile image
+   
     if (userData.profileImage && typeof userData.profileImage === 'string') {
       if (userData.profileImage.startsWith('data:')) {
         try {
@@ -77,7 +84,7 @@ export class AuthService {
       }
     }
 
-    // Append other fields
+  
     Object.keys(userData).forEach(key => {
       if (key !== 'profileImage') {
         const value = userData[key];

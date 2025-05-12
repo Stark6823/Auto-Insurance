@@ -1,236 +1,408 @@
 <div class="container mt-5">
   <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card shadow">
-        <div class="card-header bg-success text-white">
-          <h3 class="text-center">Register</h3>
+    <div class="col-md-8">
+      <div class="card shadow-lg border-0 rounded-lg">
+        <div class="card-header bg-success text-white py-3">
+          <h3 class="text-center mb-0">Create Account</h3>
         </div>
+        
+        <!-- Progress Tracker -->
+        <div class="progress-container px-4 pt-4">
+          <div class="stepper-wrapper">
+            <div class="stepper-item" [ngClass]="{'completed': currentStep > 1, 'active': currentStep === 1}">
+              <div class="step-counter">
+                <i *ngIf="currentStep > 1" class="fas fa-check"></i>
+                <span *ngIf="currentStep <= 1">1</span>
+              </div>
+              <div class="step-name">Personal Details</div>
+            </div>
+            <div class="stepper-item" [ngClass]="{'completed': currentStep > 2, 'active': currentStep === 2}">
+              <div class="step-counter">
+                <i *ngIf="currentStep > 2" class="fas fa-check"></i>
+                <span *ngIf="currentStep <= 2">2</span>
+              </div>
+              <div class="step-name">Security</div>
+            </div>
+            <div class="stepper-item" [ngClass]="{'completed': currentStep > 3, 'active': currentStep === 3}">
+              <div class="step-counter">
+                <i *ngIf="currentStep > 3" class="fas fa-check"></i>
+                <span *ngIf="currentStep <= 3">3</span>
+              </div>
+              <div class="step-name">Verification</div>
+            </div>
+          </div>
+        </div>
+        
         <div class="card-body">
           <form #registerForm="ngForm" (ngSubmit)="onSubmit()">
-            <div class="mb-3">
-              <label class="form-label">First Name</label>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="user.firstName"
-                name="firstName"
-                required
-                #firstNameInput="ngModel"
-              />
-              <div
-                *ngIf="formSubmitted && firstNameInput.invalid"
-                class="text-danger"
-              >
-                First name is required.
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Last Name</label>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="user.lastName"
-                name="lastName"
-                required
-                #lastNameInput="ngModel"
-              />
-              <div
-                *ngIf="formSubmitted && lastNameInput.invalid"
-                class="text-danger"
-              >
-                Last name is required.
-              </div>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Email</label>
-              <input
-                type="email"
-                class="form-control"
-                [(ngModel)]="user.email"
-                name="email"
-                required
-                #emailInput="ngModel"
-              />
-              <div
-                *ngIf="formSubmitted && emailInput.invalid"
-                class="text-danger"
-              >
-                Email is required.
-              </div>
-            </div>
             
-            <div class="mb-3">
-              <label class="form-label">Password</label>
-              <input
-                type="password"
-                class="form-control"
-                [(ngModel)]="user.password"
-                name="password"
-                required
-                #passwordInput="ngModel"
-              />
-              <div
-                *ngIf="formSubmitted && passwordInput.invalid"
-                class="text-danger"
-              >
-                Password is required.
+            <!-- Step 1: Personal Details -->
+            <div *ngIf="currentStep === 1" class="step-content">
+              <h4 class="mb-4 text-center text-success">Personal Information</h4>
+              
+              <!-- First Name and Last Name in the same row -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">First Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="user.firstName"
+                    name="firstName"
+                    placeholder="Enter first name"
+                    required
+                    #firstNameInput="ngModel"
+                  />
+                  <div
+                    *ngIf="formSubmitted && firstNameInput.invalid"
+                    class="text-danger small"
+                  >
+                    First name is required.
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Last Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="user.lastName"
+                    name="lastName"
+                    placeholder="Enter last name"
+                    required
+                    #lastNameInput="ngModel"
+                  />
+                  <div
+                    *ngIf="formSubmitted && lastNameInput.invalid"
+                    class="text-danger small"
+                  >
+                    Last name is required.
+                  </div>
+                </div>
               </div>
-            </div>
-            
 
-            <div class="mb-3">
-              <label class="form-label">Phone Number</label>
-              <input
-                type="tel"
-                class="form-control"
-                [(ngModel)]="user.phoneNumber"
-                name="phoneNumber"
-                required
-                #phoneInput="ngModel"
-              />
-              <div
-                *ngIf="formSubmitted && phoneInput.invalid"
-                class="text-danger"
-              >
-                Phone number is required.
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Gender</label>
-              <select
-                class="form-select"
-                [(ngModel)]="user.gender"
-                name="gender"
-                required
-                #genderInput="ngModel"
-              >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
-              <div
-                *ngIf="formSubmitted && genderInput.invalid"
-                class="text-danger"
-              >
-                Gender is required.
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">City</label>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="user.city"
-                name="city"
-                required
-                #cityInput="ngModel"
-              />
-              <div
-                *ngIf="formSubmitted && cityInput.invalid"
-                class="text-danger"
-              >
-                City is required.
-              </div>
-            </div>
-
-            <!-- Keep your existing role and special code sections -->
-            <!-- Add error message display -->
-            <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-              {{ errorMessage }}
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Role</label>
-              <select
-                class="form-select"
-                [(ngModel)]="user.role"
-                name="role"
-                (change)="onRoleChange()"
-                required
-                #roleInput="ngModel"
-              >
-                <option value="CUSTOMER">Customer</option>
-                <option value="AGENT">Agent</option>
-                
-              </select>
-              <div
-                *ngIf="formSubmitted && roleInput.invalid"
-                class="text-danger"
-              >
-                Role is required.
-              </div>
-            </div>
-
-            <div class="mb-3" *ngIf="user.role === 'AGENT'">
-              <label class="form-label">Special Code</label>
-              <input type="text" class="form-control" [(ngModel)]="specialCode" name="specialCode" required #codeInput="ngModel">
-              <div *ngIf="formSubmitted && codeInput.invalid" class="text-danger">Special code is required.</div>
-              <div *ngIf="invalidCode" class="text-danger">Invalid code.</div>
-            </div>
-
-            <div class="mb-3">
-              <div class="input-group">
+              <div class="mb-3">
+                <label class="form-label">Email</label>
                 <input
                   type="email"
                   class="form-control"
-                  placeholder="Enter your email"
                   [(ngModel)]="user.email"
                   name="email"
-                  [readonly]="otpSent"
+                  placeholder="Enter your email"
                   required
+                  #emailInput="ngModel"
                 />
-                <button
-                  type="button"
-                  class="btn btn-outline-primary"
-                  (click)="sendOTP()"
-                  [disabled]="!user.email || otpSent"
+                <div
+                  *ngIf="formSubmitted && emailInput.invalid"
+                  class="text-danger small"
                 >
-                  {{ otpSent ? 'OTP Sent' : 'Send OTP' }}
-                </button>
+                  Email is required.
+                </div>
               </div>
-              <div *ngIf="errorMessage && !otpVerified" class="text-danger mt-2">{{ errorMessage }}</div>
-              <div *ngIf="successMessage && otpSent && !otpVerified" class="text-success mt-2">{{ successMessage }}</div>
-            </div>
+              
+              <div class="mb-3">
+                <label class="form-label">Phone Number</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  [(ngModel)]="user.phoneNumber"
+                  name="phoneNumber"
+                  placeholder="Enter your phone number"
+                  required
+                  #phoneInput="ngModel"
+                />
+                <div
+                  *ngIf="formSubmitted && phoneInput.invalid"
+                  class="text-danger small"
+                >
+                  Phone number is required.
+                </div>
+              </div>
 
-            <div *ngIf="showOtpSection && otpSent" class="mb-3">
-              <div class="input-group">
-                <!-- OTP Input -->
+              <!-- Gender as radio buttons -->
+              <div class="mb-3">
+                <label class="form-label d-block">Gender</label>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    [(ngModel)]="user.gender"
+                    name="gender"
+                    id="genderMale"
+                    value="Male"
+                    required
+                    #genderInput="ngModel"
+                  />
+                  <label class="form-check-label" for="genderMale">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    [(ngModel)]="user.gender"
+                    name="gender"
+                    id="genderFemale"
+                    value="Female"
+                  />
+                  <label class="form-check-label" for="genderFemale">Female</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    [(ngModel)]="user.gender"
+                    name="gender"
+                    id="genderOther"
+                    value="Other"
+                  />
+                  <label class="form-check-label" for="genderOther">Other</label>
+                </div>
+                <div
+                  *ngIf="formSubmitted && genderInput.invalid"
+                  class="text-danger small"
+                >
+                  Gender is required.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">City</label>
                 <input
                   type="text"
                   class="form-control"
-                  placeholder="Enter OTP"
-                  [(ngModel)]="enteredOtp"
-                  name="otp"                             
-                  maxlength="6"
+                  [(ngModel)]="user.city"
+                  name="city"
+                  placeholder="Enter your city"
                   required
+                  #cityInput="ngModel"
                 />
-                <!-- Verify OTP Button -->
-                <button
-                  type="button"
-                  class="btn btn-outline-success"
-                  (click)="verifyOTP()"
-                  [disabled]="!enteredOtp || enteredOtp.length !== 6" >
-                  Verify OTP
+                <div
+                  *ngIf="formSubmitted && cityInput.invalid"
+                  class="text-danger small"
+                >
+                  City is required.
+                </div>
+              </div>
+
+              <!-- Role selection with improved styling -->
+              <div class="mb-3">
+                <label class="form-label">Role</label>
+                <select
+                  class="form-select"
+                  [(ngModel)]="user.role"
+                  name="role"
+                  (change)="onRoleChange()"
+                  required
+                  #roleInput="ngModel"
+                >
+                  <option value="" disabled selected>Select your role</option>
+                  <option value="CUSTOMER">Customer</option>
+                  <option value="AGENT">Agent</option>
+                </select>
+                <div
+                  *ngIf="formSubmitted && roleInput.invalid"
+                  class="text-danger small"
+                >
+                  Role is required.
+                </div>
+              </div>
+
+              <!-- Special code with improved styling -->
+              <div class="mb-3" *ngIf="user.role === 'AGENT'">
+                <label class="form-label">Special Code</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  [(ngModel)]="specialCode" 
+                  name="specialCode" 
+                  placeholder="Enter special code" 
+                  required 
+                  #codeInput="ngModel"
+                >
+                <div *ngIf="formSubmitted && codeInput.invalid" class="text-danger small">Special code is required.</div>
+                <div *ngIf="invalidCode" class="text-danger small">Invalid code.</div>
+              </div>
+              
+              <div class="d-flex justify-content-end mt-4">
+                <button type="button" class="btn btn-success px-4" (click)="nextStep()" [disabled]="!isPersonalDetailsValid()">
+                  Next <i class="fas fa-chevron-right ms-1"></i>
                 </button>
               </div>
-              <!-- Success and Error Messages -->
-              <div *ngIf="otpVerified" class="text-success mt-2">OTP verified successfully!</div>
-              <div *ngIf="errorMessage && !otpVerified" class="text-danger mt-2">{{ errorMessage }}</div>
             </div>
+            
+            <!-- Step 2: Password -->
+            <div *ngIf="currentStep === 2" class="step-content">
+              <h4 class="mb-4 text-center text-success">Security Information</h4>
+              
+              <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  [(ngModel)]="user.password"
+                  name="password"
+                  placeholder="Create your password"
+                  required
+                  minlength="6"
+                  #passwordInput="ngModel"
+                />
+                <div class="password-strength mt-2" *ngIf="user.password">
+                  <div class="progress" style="height: 5px;">
+                    <div class="progress-bar" 
+                         [ngClass]="{
+                           'weak': getPasswordStrength() <= 33,
+                           'medium': getPasswordStrength() > 33 && getPasswordStrength() <= 66,
+                           'strong': getPasswordStrength() > 66
+                         }"
+                         [style.width]="getPasswordStrength() + '%'">
+                    </div>
+                  </div>
+                  <small class="text-muted"
+                         [ngClass]="{
+                           'weak': getPasswordStrength() <= 33,
+                           'medium': getPasswordStrength() > 33 && getPasswordStrength() <= 66,
+                           'strong': getPasswordStrength() > 66
+                         }">
+                    Password strength: {{getPasswordStrengthText()}}
+                  </small>
+                </div>
+                <div
+                  *ngIf="formSubmitted && passwordInput.invalid"
+                  class="text-danger small"
+                >
+                  Password must be at least 6 characters.
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label">Confirm Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  [(ngModel)]="confirmPassword"
+                  name="confirmPassword"
+                  placeholder="Confirm your password"
+                  required
+                  #confirmPasswordInput="ngModel"
+                />
+                <div
+                  *ngIf="confirmPassword && user.password !== confirmPassword"
+                  class="text-danger small"
+                >
+                  Passwords do not match.
+                </div>
+              </div>
+              
+              <div class="d-flex justify-content-between mt-4">
+                <button type="button" class="btn btn-outline-secondary px-4" (click)="prevStep()">
+                  <i class="fas fa-chevron-left me-1"></i> Back
+                </button>
+                <button type="button" class="btn btn-success px-4" (click)="nextStep()" [disabled]="!isSecurityDetailsValid()">
+                  Next <i class="fas fa-chevron-right ms-1"></i>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Step 3: Verification -->
+            <div *ngIf="currentStep === 3" class="step-content">
+              <h4 class="mb-4 text-center text-success">Email Verification</h4>
+              
+              <div class="mb-4 text-center">
+                <p>We need to verify your email address.</p>
+                <p class="mb-0">An OTP will be sent to: <strong>{{user.email}}</strong></p>
+              </div>
+              
+              <div class="mb-3">
+                <div class="d-grid gap-2">
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary position-relative"
+                    (click)="sendRegistrationOTP()"
+                    [disabled]="!user.email || otpSent || isLoading"
+                  >
+                    <!-- Loading Spinner (inside button) -->
+                    <span *ngIf="isLoading" class="spinner-container">
+                      <span class="spinner-border spinner-border-sm" role="status">
+                      </span>
+                      <span>Sending Otp...</span>
+                    </span>
+                    
+                    <!-- Button Content (hidden during loading) -->
+                    <span [class.invisible]="isLoading">
+                      <i class="fas fa-paper-plane me-2"></i>
+                      {{ otpSent ? 'OTP Sent' : 'Send OTP' }}
+                    </span>
+                  </button>
+              
+                  <!-- Error and Success Messages -->
+                  <div *ngIf="errorMessage && !otpVerified" class="text-danger text-center mt-2">
+                    {{ errorMessage }}
+                  </div>
+                  <div *ngIf="successMessage && otpSent && !otpVerified" class="text-success text-center mt-2">
+                    {{ successMessage }}
+                  </div>
+                </div>
+                
+              </div>
+              <div class="text-center mb-3" *ngIf="otpSent && !otpVerified">
+                <div class="otp-timer" *ngIf="otpTimer > 0">
+                  Resend OTP in {{otpTimer}} seconds
+                </div>
+                <div class="otp-resend" *ngIf="otpTimer === 0">
+                  <a (click)="resendOTP()" class="text-link" style="cursor: pointer;">Resend OTP</a>
+                </div>
+                
+              </div>
+            
+              <div *ngIf="showOtpSection && otpSent" class="mb-3">
+                
+                <div class="otp-input-container d-flex justify-content-center mb-3">
+                  <input
+                    type="text"
+                    class="form-control text-center"
+                    placeholder="Enter 6-digit OTP"
+                    [(ngModel)]="enteredOtp"
+                    name="otp"                             
+                    maxlength="6"
+                    required
+                  />
+                </div>
+                
+                <div class="d-grid gap-2">
+                  <button
+                    type="button"
+                    class="btn btn-outline-success"
+                    (click)="verifyOTP()"
+                    [disabled]="!enteredOtp || enteredOtp.length !== 6"
+                  >
+                    <i class="fas fa-check-circle me-2"></i> Verify OTP
+                  </button>
+                </div>
+                
+                <div *ngIf="otpVerified" class="text-success text-center mt-2">
+                  <i class="fas fa-check-circle me-1"></i> OTP verified successfully!
+                </div>
+              </div>
 
-            <div class="d-flex justify-content-between">
-              <button type="reset" class="btn btn-secondary w-50 mx-2">
-                Reset
-              </button>
-              <button type="submit" class="btn btn-success w-50 mx-2">
-                Register
+              <div class="d-flex justify-content-between mt-4">
+                <button type="button" class="btn btn-outline-secondary px-4" (click)="prevStep()">
+                  <i class="fas fa-chevron-left me-1"></i> Back
+                </button>
+                <button type="submit" class="btn btn-success px-4" [disabled]="!otpVerified">
+                  Register <i class="fas fa-user-plus ms-1"></i>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Error message display -->
+            <div *ngIf="errorMsg" class="alert alert-danger mt-3">
+              {{ errorMsg }}
+            </div>
+            
+            <div class="text-center mt-4">
+              <button type="button" (click)="goBackToHome()" class="btn btn-link text-success">
+                <i class="fas fa-home me-1"></i> Back to Home
               </button>
             </div>
-            <button (click)="goBackToHome()" class="btn btn-success mt-4 mx-2">
-              Back
-            </button>
           </form>
         </div>
       </div>

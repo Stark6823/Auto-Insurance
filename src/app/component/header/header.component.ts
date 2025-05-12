@@ -19,7 +19,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   showProfileCard = false;
   showDetailedProfileCard = false;
   currentUser: User | null = null;
-  profileImage = 'assets/userlogo001.png';
+  profileImage = '../assets/userlogo001.png';
   showAvatarOptions = false;
   showAvatarOptionsDetailed = false;
   editingDetailedField: string | null = null;
@@ -43,6 +43,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.profileUpdateSubscription = this.profileImageUpdated.subscribe(() => {
       this.loadCurrentUser();
     });
+   
   }
 
   ngOnDestroy(): void {
@@ -58,11 +59,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if (this.currentUser && this.currentUser.profileImage) {
         this.profileImage ='http://localhost:3000'+ this.currentUser.profileImage;
       } else {
-        this.profileImage = 'assets/userlogo001.png';
+        this.profileImage = '/assets/userlogo001.png';
       }
     } else {
       this.currentUser = null;
-      this.profileImage = 'assets/userlogo001.png';
+      this.profileImage = '../assets/userlogo001.png';
     }
   }
 
@@ -77,6 +78,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logout() {
     this.authService.logout();
     this.currentUser = null;
+    this.profileImage = '../assets/userlogo001.png';
     this.closeProfileCard();
     this.closeDetailedProfileCard();
   }
@@ -248,8 +250,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }).subscribe({
       next: (response) => {
         if (response.success && this.currentUser) {
-          this.profileImage = response.user.profileImage || 'assets/userlogo001.png';
+          this.profileImage = response.user.profileImage || '../assets/userlogo001.png';
+          console.log(response.user.profileImage);
           this.currentUser.profileImage = this.profileImage;
+          console.log('set profile image:', this.currentUser.profileImage);
           localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
           this.profileImageUpdated.emit(this.profileImage);
         }
@@ -268,12 +272,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   
     this.isLoading = true;
+  
     this.authService.updateUser(this.currentUser._id, {
-      profileImage: 'assets/userlogo001.png'
+      profileImage: null
     }).subscribe({
       next: (response) => {
         if (response.success) {
-          this.profileImage = 'assets/userlogo001.png';
+          // Set profileImage to default and bypass caching
+          console.log('image Updated:', response.user.profileImage);
+          this.profileImage = '';          
+          // Update local storage and emit event
           if (this.currentUser) {
             this.currentUser.profileImage = this.profileImage;
             localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
@@ -287,6 +295,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       }
     });
+  
     this.showAvatarOptions = false;
     this.showAvatarOptionsDetailed = false;
   }

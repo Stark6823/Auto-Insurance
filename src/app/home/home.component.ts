@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../shared/models/user.model';
@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './home.component.html', // Use templateUrl here
   styleUrls: ['./home.component.css'], // Add this line if you have CSS for this component,
   // Removed invalid 'imports' property
-  imports: [CommonModule, FormsModule,FrontPageComponent]
+  imports: [CommonModule, FormsModule,FrontPageComponent],
 })
 export class HomeComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}

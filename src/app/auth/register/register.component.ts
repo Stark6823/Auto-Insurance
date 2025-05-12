@@ -13,7 +13,7 @@ import { interval, Subscription, take } from 'rxjs';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent {
-  registerForm: FormGroup;
+ // registerForm: FormGroup;
   otpForm: FormGroup;
   errorMessage: string = '';
   successMessage: string = '';
@@ -33,18 +33,6 @@ export class RegisterComponent {
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) 
   {
-    this.registerForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
-      gender: ['', Validators.required],
-      city: ['', Validators.required],
-      role: ['', Validators.required],
-      specialCode: [''],
-      password: ['', [Validators.required, Validators.minLength(6)]]
-    }),
-
     this.otpForm = this.fb.group({
       otp: ['', [Validators.required, Validators.pattern(/^[0-9a-zA-Z]{6}$/)]]
     });
